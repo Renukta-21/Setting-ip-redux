@@ -1,57 +1,44 @@
-import { createStore } from 'redux'
+import { createStore } from "redux"
 
-const noteReducer = (state = [], action) => {
-  if (action.type === 'NEW_NOTE') {
-    state.push(action.payload)
-    return state
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_NOTE':
+      return state.concat(action.payload)
   }
-
-  return state
 }
 
-const store = createStore(noteReducer)
+const store = createStore(reducer)
 
 store.dispatch({
-  type: 'NEW_NOTE',
+  type: 'ADD_NOTE',
   payload: {
-    content: 'the app state is in redux store',
-    important: true,
-    id: 1,
-  },
+    name: 'Schedule day',
+    description: 'Adding new features'
+  }
 })
 
 store.dispatch({
-  type: 'NEW_NOTE',
+  type: 'ADD_NOTE',
   payload: {
-    content: 'state changes are made with actions',
-    important: false,
-    id: 2,
-  },
+    name: 'Eduardo',
+    description: 'JAJAJA alv'
+  }
 })
-const handleNewNote = () => {
-  store.dispatch({
-    type: 'NEW_NOTE',
-    payload: {
-      content: 'Hola tonotos',
-      important: true,
-      id: 3,
-    },
-  })
-}
 
-const App = () => {
+function App() {
   return (
     <div>
-        {store.getState()}
-      <ul>
-        {store.getState().map((note) => (
-          <li key={note.id}>
-            {note.content} <strong>{note.important ? 'important' : ''}</strong>
-          </li>
-        ))}
-        <button onClick={handleNewNote}>Add new Note</button>
-      </ul>
+      <h2>Notes app with Redux</h2>
+      {store.getState().map(e => {
+        return (
+          <div style={{ border: '1px solid black' }}>
+            <p>{e.name}</p>
+            <p>{e.description}</p>
+          </div>
+        )
+      })}
     </div>
   )
 }
+
 export default App
