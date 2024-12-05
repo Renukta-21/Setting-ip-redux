@@ -1,48 +1,44 @@
 import { createStore } from "redux"
 
-const reducer = (state = [], action) => {
+const noteReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_NOTE':
       return state.concat(action.payload)
-    case 'TOOGLE_IMPORTANCE':
-      return state
-    default:
-      return state
   }
 }
-
-const store = createStore(reducer)
-
-store.dispatch({
-  type: 'ADD_NOTE',
-  payload: {
-    name: 'Schedule day',
-    description: 'Adding new features',
-    id:1
-  }
-})
+const store = createStore(noteReducer)
 
 store.dispatch({
   type: 'ADD_NOTE',
   payload: {
-    name: 'Eduardo',
-    description: 'JAJAJA alv',
-    id:2
+    id: 1,
+    title: 'Hola tonotos',
+    important: true
   }
 })
 
+const addNote = (e) => {
+  e.preventDefault()
+  store.dispatch({
+    type: 'ADD_NOTE',
+    payload: {
+      id: 2,
+      title: e.target.name.value,
+      important: false
+    }
+  })
+
+}
 function App() {
   return (
     <div>
-      <h2>Notes app with Redux</h2>
-      {store.getState().map(e => {
-        return (
-          <div key={e.id} style={{ border: '1px solid black' }}>
-            <p>{e.name}</p>
-            <p>{e.description}</p>
-          </div>
-        )
-      })}
+      <h3>NOTES</h3>
+      {store.getState().map(e => <p key={e.id}>{e.title} {e.description}</p>)}
+      <form action="" onSubmit={addNote} >
+        <input type="text" name="note" />
+        <button>Send</button>
+      </form>
+      {/* <button onClick={addNote}>Add note</button> */}
     </div>
   )
 }
